@@ -148,34 +148,28 @@ class SuratMasukController extends Controller
     /**
      * Menampilkan detail surat masuk. Dapat diakses oleh staff, Pimpinan, dan Admin.
      */
-    public function show(SuratMasuk $suratMasuk, $id)
+    public function show(SuratMasuk $suratMasuk)
     {
         $user = Auth::user();
 
         // Otorisasi: Hanya staff, Pimpinan, Admin yang bisa melihat detail penuh.
         // Mahasiswa/Dosen melihat melalui disposisi (jika disposisi surat ini ditujukan kepada mereka).
-        if (!in_array($user->role->name, ['staff', 'pimpinan', 'admin'])) {
+        if ($user->role->name === 'staff' || $user->role->name === 'pimpinan' || $user->role->name === 'admin') {
             // Jika Anda ingin Mahasiswa/Dosen bisa melihat detail SM jika disposisi ke mereka,
             // tambahkan logika pengecekan di sini, misalnya:
             // $hasDisposisiToUser = Disposisi::where('surat_masuk_id', $suratMasuk->id)
             //                               ->where('ke_user_id', $user->id)
             //                               ->exists();
-            // if (!$hasDisposisiToUser) { abort(403, 'Akses ditolak.'); }
-            abort(403, 'Anda tidak diizinkan melihat surat masuk ini.');
+            
+        $suratMasuk->load(['user', 'status', 'sifat', 'disposisi.dariUser', 'disposisi.keUser']);
+        // dd($suratMasuk);
+        return view('staff.surat_masuk.show', compact('suratMasuk')); // Mengembalikan JSON untuk modal
+            // abort(403, 'Anda tidak diizinkan melihat surat masuk ini.');
         } elseif ($user->role->name === 'mahasiswa' || $user->role->name === 'dosen') {
-            // Jika Mahasiswa/Dosen, pastikan mereka memiliki disposisi terkait surat ini
-            $surat = SuratMasuk::with(['pengirim', 'sifat', 'user', 'disposisi.penerima'])->findOrFail($id);
-            if (
-                !in_array(Auth::user()->role->name, ['mahasiswa', 'dosen']) ||
-                ($surat->disposisi->penerima_id !== Auth::user()->id && $surat->pengirim_id !== Auth::user()->id)
-            ) {
-                return response()->json(['error' => 'Unauthorized'], 403);
-            }
-            return response()->json($surat);
+            $suratMasuk->load(['user', 'status', 'sifat', 'pengirim', 'disposisi.dariUser', 'disposisi.keUser']);
+            return view('mahasiswa.surat_masuk.show', compact('suratMasuk'));
         }
 
-        $suratMasuk->load(['user', 'status', 'sifat', 'disposisi.dariUser', 'disposisi.keUser']);
-        return response()->json($suratMasuk); // Mengembalikan JSON untuk modal
     }
     public function getDispositions($id)
     {

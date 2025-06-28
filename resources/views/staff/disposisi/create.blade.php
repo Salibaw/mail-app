@@ -29,6 +29,9 @@
         <div class="mb-3">
             <label for="instruksi" class="form-label">Instruksi/Catatan</label>
             <textarea class="form-control" id="instruksi" name="instruksi" rows="5">{{ old('instruksi') }}</textarea>
+            @error('instruksi')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
         <div class="mb-3">
             <label for="status_disposisi" class="form-label">Status Disposisi</label>
@@ -37,6 +40,9 @@
                 <option value="Diterima" {{ old('status_disposisi') == 'Diterima' ? 'selected' : '' }}>Diterima (untuk disposisi balik)</option>
                 <option value="Selesai" {{ old('status_disposisi') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
             </select>
+            @error('status_disposisi')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
         <button type="submit" class="btn btn-primary">Simpan Disposisi</button>
         <a href="{{ route('staff.surat-masuk.index') }}" class="btn btn-secondary">Batal</a>

@@ -56,4 +56,39 @@
         {{ $disposisiDiterima->links() }}
     </div>
 </div>
+
+<!-- modal show -->
+@foreach($disposisiDiterima as $disposisi)
+<div class="modal fade" id="showDisposisiModal" tabindex="-1" aria-labelledby="showDisposisiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showDisposisiModalLabel">Detail Disposisi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>No. Agenda Surat:</strong> {{ $disposisi->suratMasuk->nomor_agenda ?? 'N/A' }}</p>
+                <p><strong>Perihal Surat:</strong> {{ $disposisi->suratMasuk->perihal ?? 'N/A' }}</p>
+                <p><strong>Dari:</strong> {{ $disposisi->dariUser->nama ?? 'N/A' }}</p>
+                <p><strong>Instruksi:</strong> {{ $disposisi->instruksi }}</p>
+                <p><strong>Status Disposisi:</strong> {{ $disposisi->status_disposisi }}</p>
+                <p><strong>Tanggal Disposisi:</strong> {{ $disposisi->tanggal_disposisi->translatedFormat('d M Y H:i') }}</p>
+                <hr>
+                <h5>Instruksi:</h5>
+                <div id="disposisi_show_instruksi" style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; white-space: pre-wrap;">{{$disposisi->instruksi}}</div>
+
+                <h5 class="mt-3">Lampiran Surat Masuk:</h5>
+                @if($disposisi->suratMasuk->lampiran)
+                    <a href="{{ asset('storage/' . $disposisi->suratMasuk->lampiran) }}" target="_blank" class="btn btn-secondary">Lihat Lampiran</a>
+                @else
+                    <p>Tidak ada lampiran untuk surat ini.</p>
+                @endif
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 @endsection

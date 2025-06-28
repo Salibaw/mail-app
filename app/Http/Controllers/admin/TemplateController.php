@@ -16,7 +16,7 @@ class TemplateController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $templates = TemplateSurat::with('user')->select(['id', 'nama_template', 'jenis_surat', 'user_id']);
+            $templates = TemplateSurat::with('user')->select(['id', 'nama_template', 'jenis_surat', 'isi_template', 'user_id']);
 
             return DataTables::of($templates)
                 ->addIndexColumn()

@@ -50,15 +50,16 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::get('/get-template-details', [SuratKeluarController::class, 'getTemplateDetails'])->name('surat-keluar.get-template-details');
 
     Route::get('surat-masuk', [SuratMasukController::class, 'index'])->name('surat-masuk.index');
-    Route::get('surat-masuk/{id}', [SuratMasukController::class, 'show'])->name('surat-masuk.show');
+    Route::get('surat-keluar/{surat_keluar}', [SuratMasukController::class, 'show'])->name('surat-masuk.show');
     Route::get('surat-masuk/{id}/disposisi', [SuratMasukController::class, 'getDisposisi'])->name('surat-masuk.disposisi');
 
     // Rute untuk Disposisi yang diterima Mahasiswa (sebagai pengganti "Surat Masuk" yang relevan untuk Mahasiswa)
     Route::get('disposisi', [DisposisiController::class, 'indexMahasiswa'])->name('disposisi.index'); // Atau nama lain yang lebih spesifik
     Route::get('disposisi/{disposisi}', [DisposisiController::class, 'show'])->name('disposisi.show');
+    Route::post('disposisi/{surat_masuk}', [DisposisiController::class, 'store'])->name('disposisi.store'); // Buat Disposisi baru
 });
 
-// Staff TU Middleware
+// Staff Middleware
 Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
     Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
 
@@ -107,27 +108,22 @@ Route::prefix('pimpinan')->middleware(['auth', 'role:pimpinan'])->name('pimpinan
 });
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-
+    
     // CRUD untuk User
     Route::resource('users', UserController::class);
     Route::post('users/import', [\App\Http\Controllers\Admin\UserController::class, 'import'])->name('admin.users.import');
     // CRUD untuk UserType (Role)
     Route::resource('roles', UserTypeController::class)->except(['show']); // Tidak perlu show untuk detail role
-
+    
     // CRUD untuk Status Surat
     Route::resource('status-surat', StatusSuratController::class)->except(['show']);
-
+    
     // CRUD untuk Sifat Surat
     Route::resource('sifat-surat', SifatSuratController::class)->except(['show']);
-
+    
     // CRUD untuk Template Surat    
     Route::resource('templates', TemplateController::class)->only([
         'index',
@@ -137,4 +133,9 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
     ]);
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 require __DIR__ . '/auth.php';

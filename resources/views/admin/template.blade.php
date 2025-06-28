@@ -43,7 +43,7 @@
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">No</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Nama Template</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Jenis Surat</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Pembuat</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Isi Template</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Aksi</th>
                 </tr>
             </thead>
@@ -52,7 +52,6 @@
     </div>
 </div>
 
-<!-- Modal Create -->
 <!-- Modal Create -->
 <div id="createModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-lg p-6 w-full max-w-md">
@@ -232,7 +231,7 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'nama_template', name: 'nama_template' },
                 { data: 'jenis_surat', name: 'jenis_surat' },
-                { data: 'user.nama', name: 'user.nama' },
+                { data: 'isi_template', name: 'isi_template' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
             language: {

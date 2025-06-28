@@ -32,7 +32,7 @@
         <div class="col-md-3 col-sm-6 mb-4">
             <div class="card text-white bg-danger">
                 <div class="card-body">
-                    <h5 class="card-title">SK Menunggu Persetujuan</h5>
+                    <h5 class="card-title">SK Menunggu</h5>
                     <p class="card-text fs-3">{{ $suratKeluarMenungguPersetujuan }}</p>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                         <th>Pengirim</th>
                         <th>Perihal</th>
                         <th>Tgl Terima</th>
-                        <th>Aksi</th>
+                        <!-- <th>Aksi</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -63,10 +63,10 @@
                             <td data-label="Pengirim">{{ $surat->pengirim->email }}</td>
                             <td data-label="Perihal">{{ $surat->perihal }}</td>
                             <td data-label="Tgl Terima">{{ \Carbon\Carbon::parse($surat->tanggal_terima)->translatedFormat('d M Y') }}</td>
-                            <td data-label="Aksi">
+                            <!-- <td data-label="Aksi">
                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#showSuratMasukModal" data-id="{{ $surat->id }}">Lihat</button>
                                 <a href="{{ route('staff.disposisi.create', $surat->id) }}" class="btn btn-success btn-sm mt-1">Disposisi</a>
-                            </td>
+                            </td> -->
                         </tr>
                     @endforeach
                 </tbody>
@@ -87,7 +87,7 @@
                         <th>Diajukan Oleh</th>
                         <th>Status</th>
                         <th>Tanggal Pengajuan</th>
-                        <th>Aksi</th>
+                        <!-- <th>Aksi</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -98,10 +98,10 @@
                             <td data-label="Diajukan Oleh">{{ $surat->user->nama ?? 'N/A' }}</td>
                             <td data-label="Status"><span class="badge bg-warning text-dark">{{ $surat->status->nama_status }}</span></td>
                             <td data-label="Tanggal Pengajuan">{{ $surat->created_at->translatedFormat('d M Y H:i') }}</td>
-                            <td data-label="Aksi">
+                            <!-- <td data-label="Aksi">
                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#showSuratKeluarModal" data-id="{{ $surat->id }}">Lihat</button>
                                 <button type="button" class="btn btn-success btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#processSuratKeluarModal" data-id="{{ $surat->id }}">Proses</button>
-                            </td>
+                            </td> -->
                         </tr>
                     @endforeach
                 </tbody>

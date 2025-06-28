@@ -131,6 +131,7 @@
         </div>
     </div>
 </div>
+@foreach($suratKeluar as $surat)
 <div class="modal fade" id="showSuratKeluarModal" tabindex="-1" aria-labelledby="showSuratKeluarModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -139,26 +140,25 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Perihal:</strong> <span id="show_sk_perihal"></span></p>
-                <p><strong>Penerima:</strong> <span id="show_sk_penerima"></span></p>
-                <p><strong>Diajukan Oleh:</strong> <span id="show_sk_diajukan_oleh"></span></p>
-                <p><strong>Status:</strong> <span id="show_sk_status"></span></p>
-                <p><strong>Sifat Surat:</strong> <span id="show_sk_sifat_surat"></span></p>
-                <p><strong>Nomor Surat:</strong> <span id="show_sk_nomor_surat"></span></p>
-                <p><strong>Tanggal Surat:</strong> <span id="show_sk_tanggal_surat"></span></p>
-                <p><strong>Diajukan Pada:</strong> <span id="show_sk_diajukan_pada"></span></p>
+                <p><strong>Perihal:</strong> {{$surat->perihal}}</p>
+                <p><strong>Penerima:</strong> {{$surat->penerima->email}}</p>
+                <p><strong>Diajukan Oleh:</strong>{{$surat->user->email}} </p>
+                <p><strong>Status:</strong> {{$surat->status->nama_status}}</p>
+                <p><strong>Sifat Surat:</strong>{{ $surat->sifat->nama_sifat ?? 'N/A' }} </p>
+                <p><strong>Nomor Surat:</strong> {{$surat->nomor_surat}}</p>
+                <p><strong>Tanggal Surat:</strong>{{ $surat->tanggal_surat ?? 'N/A' }} </p>
+                <p><strong>Diajukan Pada:</strong>{{ $surat->created_at ?? 'N/A' }} </p>
 
                 <hr>
                 <h5>Isi Surat:</h5>
-                <div id="show_sk_isi_surat" style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; white-space: pre-wrap;"></div>
+                <div id="show_sk_isi_surat" style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; white-space: pre-wrap;">{{$surat->isi_surat}}</div>
 
+                @if($surat->lampiran)
                 <h5 class="mt-3">Lampiran:</h5>
-                <div id="show_sk_lampiran"></div>
-
-                <h5 class="mt-3">Riwayat Persetujuan/Penolakan:</h5>
-                <ul id="show_sk_riwayat_persetujuan" class="list-group">
-                    {{-- Riwayat akan diisi oleh JS --}}
-                </ul>
+                <a href="{{ asset('storage/' . $surat->lampiran) }}" target="_blank" class="btn btn-secondary">Lihat Lampiran</a>
+                @else
+                <p>Tidak ada lampiran untuk surat ini.</p>
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -166,7 +166,9 @@
         </div>
     </div>
 </div>
+@endforeach
 
+{{-- Modal Proses Surat Keluar --}}
 <div class="modal fade" id="processSuratKeluarModal" tabindex="-1" aria-labelledby="processSuratKeluarModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

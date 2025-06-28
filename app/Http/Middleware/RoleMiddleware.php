@@ -22,7 +22,7 @@ class RoleMiddleware
     }
 
     // Log untuk memastikan nilai role
-    logger('User Role:', [
+    logger('User role:', [
         'expected' => $role,
         'actual' => $user->role->name,
         'user_id' => $user->id

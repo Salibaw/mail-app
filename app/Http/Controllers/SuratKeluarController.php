@@ -121,9 +121,9 @@ class SuratKeluarController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        if (!in_array($user->role->name, ['mahasiswa', 'dosen', 'staff'])) {
-            abort(403, 'Anda tidak diizinkan membuat surat.');
-        }
+        // if (!in_array($user->role->name, ['mahasiswa', 'dosen', 'staff'])) {
+        //     abort(403, 'Anda tidak diizinkan membuat surat.');
+        // }
 
         $request->validate([
             'perihal' => 'required|string|max:255',
@@ -199,16 +199,16 @@ class SuratKeluarController extends Controller
 
         // Otorisasi: Hanya pemilik (mahasiswa/Dosen) yang dapat mengedit
         // DAN status surat harus 'Draf' atau 'Ditolak'.
-        if (
-            $user->id !== $suratKeluar->user_id ||
-            !in_array($suratKeluar->status->nama_status, ['Draf', 'Ditolak'])
-        ) {
-            abort(403, 'Anda tidak diizinkan memperbarui surat ini.');
-        }
+        // if (
+        //     $user->id !== $suratKeluar->user_id ||
+        //     !in_array($suratKeluar->status->nama_status, ['Draf', 'Ditolak'])
+        // ) {
+        //     abort(403, 'Anda tidak diizinkan memperbarui surat ini.');
+        // }
 
         $request->validate([
             'perihal' => 'required|string|max:255',
-            'penerima' => 'required|string|max:255',
+            'penerima_id' => 'required|exists:users,id',
             'sifat_surat_id' => 'required|exists:sifat_surats,id',
             'template_surat_id' => 'nullable|exists:template_surats,id',
             'isi_surat_manual' => 'nullable|string',
@@ -240,7 +240,7 @@ class SuratKeluarController extends Controller
 
         $suratKeluar->update([
             'perihal' => $request->perihal,
-            'penerima' => $request->penerima,
+            'penerima_id' => $request->penerima_id,
             'isi_surat' => $isiSuratFinal,
             'lampiran' => $lampiranPath,
             'status_id' => $statusMenungguPersetujuan->id, // Diajukan kembali untuk persetujuan

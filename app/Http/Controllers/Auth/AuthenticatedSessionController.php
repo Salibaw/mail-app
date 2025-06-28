@@ -29,7 +29,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+         return redirect()->intended(
+            $this->redirectPathByRole(Auth::user()->role->name)
+        );
     }
     protected function redirectPathByRole(string $role): string
     {

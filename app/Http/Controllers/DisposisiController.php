@@ -161,7 +161,7 @@ class DisposisiController extends Controller
              $suratMasuk->update(['status_id' => $statusDidisposisi->id]);
         }
 
-        return redirect()->back()->with('success', 'Disposisi berhasil dibuat.');
+        return redirect()->route('staff.surat-masuk.index')->with('success', 'Disposisi berhasil dibuat.');
     }
 
     /**

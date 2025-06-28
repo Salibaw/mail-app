@@ -27,6 +27,7 @@ class SuratKeluarController extends Controller
             ->whereHas('status', function ($query) {
                 $query->whereIn('nama_status', ['Menunggu Persetujuan', 'Disetujui', 'Ditolak','Proses']);
             })
+            ->whereNotNull('nomor_surat')
             ->with(['user.role', 'status', 'sifat', 'persetujuan.penyetuju'])
             ->latest()
             ->paginate(10);
